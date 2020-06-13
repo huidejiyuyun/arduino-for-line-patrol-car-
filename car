@@ -1,0 +1,41 @@
+//如果显示为1就是接触到了黑线
+//如果亮了就是接触到了白线
+//只有两个接触器都在黑线上才会变暗
+#include <L9110s.h>//加载电机库
+L9110s car;
+
+int XIX; //AIA = 9 AIB = 5
+int YIY; //BIA = 10 BIB = 6
+//设置巡线模块
+int linepin1 = 1;
+int linepin2 = 2;
+int linepin3 = 3;
+char input,val1,val2,val3;
+
+void setup() {
+  //初始化设定
+  Serial.begin(9600);
+  pinMode(XIX, OUTPUT);
+  pinMode(YIY, OUTPUT);
+  pinMode(linepin1, INPUT);
+  pinMode(linepin2, INPUT);
+  pinMode(linepin3, INPUT);
+}
+
+void loop() {
+  val1 = digitalRead(linepin1);
+  val2 = digitalRead(linepin2);
+  val3 = digitalRead(linepin2);
+  if(val1 ==1 and val2 == 0){//如果右边的传感器未检测到黑线，那么左转
+    car.left(255);
+    Serial.println("Left");
+  }
+  else if(val1 == 0 and val2 == 1){//如果左边的传感器未检测到黑线，那么右转
+    car.right(255);
+    Serial.println("Right");
+  }else{
+    car.forward(255);
+    Serial.println("Forward");
+  }
+  delay(500);
+}
